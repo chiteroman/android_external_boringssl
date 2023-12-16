@@ -298,6 +298,7 @@ cc_library {
         "com.android.virt",
     ],
     min_sdk_version: "29",
+    afdo: true,
 }
 
 // Version of libcrypto build with BORINGSSL_FIPS_BREAK_TESTS defined
@@ -366,6 +367,7 @@ cc_library_static {
         "//hardware/interfaces/keymaster/4.0/vts/functional",
         "//hardware/interfaces/keymaster/4.1/vts/functional",
         "//packages/modules/adb",
+        "//packages/modules/AdServices:__subpackages__",
         "//packages/modules/DnsResolver/tests:__subpackages__",
         "//packages/modules/NeuralNetworks:__subpackages__",
         "//system/core/init",
@@ -380,6 +382,8 @@ cc_library_static {
     min_sdk_version: "29",
     apex_available: [
         "//apex_available:platform",
+        "com.android.adservices",
+        "com.android.extservices",
         "com.android.neuralnetworks",
     ],
     defaults: [
@@ -819,9 +823,10 @@ cc_library_host_static {
 }
 
 // Replace the upstream CMake placeholder with a re-export of all of the local bindgen output.
-gensrcs {
+genrule {
     name: "libbssl_sys_src",
     srcs: ["src/rust/bssl-sys/src/lib.rs"],
+    out: ["lib.rs"],
     cmd: "sed 's@^include!(env!(\"BINDGEN_RS_FILE\"));@pub use bssl_sys_raw::*;@' $(in) > $(out)",
 }
 
@@ -863,9 +868,10 @@ rust_library_host_rlib {
     ],
 }
 
-gensrcs {
+genrule {
     name: "libbssl_sys_src_nostd",
     srcs: [":libbssl_sys_src"],
+    out: ["lib.rs"],
     cmd: "(echo '#![no_std]' && cat $(in)) > $(out)",
 }
 
