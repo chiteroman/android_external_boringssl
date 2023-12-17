@@ -1461,19 +1461,19 @@ OPENSSL_EXPORT size_t SSL_get_all_standard_cipher_names(const char **out,
 //
 // Available opcodes are:
 //
-//   The empty opcode enables and appends all matching disabled ciphers to the
+// - The empty opcode enables and appends all matching disabled ciphers to the
 //   end of the enabled list. The newly appended ciphers are ordered relative to
 //   each other matching their order in the disabled list.
 //
-//   |-| disables all matching enabled ciphers and prepends them to the disabled
+// - |-| disables all matching enabled ciphers and prepends them to the disabled
 //   list, with relative order from the enabled list preserved. This means the
 //   most recently disabled ciphers get highest preference relative to other
 //   disabled ciphers if re-enabled.
 //
-//   |+| moves all matching enabled ciphers to the end of the enabled list, with
+// - |+| moves all matching enabled ciphers to the end of the enabled list, with
 //   relative order preserved.
 //
-//   |!| deletes all matching ciphers, enabled or not, from either list. Deleted
+// - |!| deletes all matching ciphers, enabled or not, from either list. Deleted
 //   ciphers will not matched by future operations.
 //
 // A selector may be a specific cipher (using either the standard or OpenSSL
@@ -1483,36 +1483,36 @@ OPENSSL_EXPORT size_t SSL_get_all_standard_cipher_names(const char **out,
 //
 // Available cipher rules are:
 //
-//   |ALL| matches all ciphers, except for deprecated ciphers which must be
+// - |ALL| matches all ciphers, except for deprecated ciphers which must be
 //   named explicitly.
 //
-//   |kRSA|, |kDHE|, |kECDHE|, and |kPSK| match ciphers using plain RSA, DHE,
+// - |kRSA|, |kDHE|, |kECDHE|, and |kPSK| match ciphers using plain RSA, DHE,
 //   ECDHE, and plain PSK key exchanges, respectively. Note that ECDHE_PSK is
 //   matched by |kECDHE| and not |kPSK|.
 //
-//   |aRSA|, |aECDSA|, and |aPSK| match ciphers authenticated by RSA, ECDSA, and
+// - |aRSA|, |aECDSA|, and |aPSK| match ciphers authenticated by RSA, ECDSA, and
 //   a pre-shared key, respectively.
 //
-//   |RSA|, |DHE|, |ECDHE|, |PSK|, |ECDSA|, and |PSK| are aliases for the
+// - |RSA|, |DHE|, |ECDHE|, |PSK|, |ECDSA|, and |PSK| are aliases for the
 //   corresponding |k*| or |a*| cipher rule. |RSA| is an alias for |kRSA|, not
 //   |aRSA|.
 //
-//   |3DES|, |AES128|, |AES256|, |AES|, |AESGCM|, |CHACHA20| match ciphers
+// - |3DES|, |AES128|, |AES256|, |AES|, |AESGCM|, |CHACHA20| match ciphers
 //   whose bulk cipher use the corresponding encryption scheme. Note that
 //   |AES|, |AES128|, and |AES256| match both CBC and GCM ciphers.
 //
-//   |SHA1|, and its alias |SHA|, match legacy cipher suites using HMAC-SHA1.
+// - |SHA1|, and its alias |SHA|, match legacy cipher suites using HMAC-SHA1.
 //
 // Deprecated cipher rules:
 //
-//   |kEDH|, |EDH|, |kEECDH|, and |EECDH| are legacy aliases for |kDHE|, |DHE|,
+// - |kEDH|, |EDH|, |kEECDH|, and |EECDH| are legacy aliases for |kDHE|, |DHE|,
 //   |kECDHE|, and |ECDHE|, respectively.
 //
-//   |HIGH| is an alias for |ALL|.
+// - |HIGH| is an alias for |ALL|.
 //
-//   |FIPS| is an alias for |HIGH|.
+// - |FIPS| is an alias for |HIGH|.
 //
-//   |SSLv3| and |TLSv1| match ciphers available in TLS 1.1 or earlier.
+// - |SSLv3| and |TLSv1| match ciphers available in TLS 1.1 or earlier.
 //   |TLSv1_2| matches ciphers new in TLS 1.2. This is confusing and should not
 //   be used.
 //
@@ -2587,16 +2587,27 @@ OPENSSL_EXPORT int (*SSL_get_verify_callback(const SSL *ssl))(
 // ineffective. Simply checking that a host has some certificate from a CA is
 // rarely meaningful—you have to check that the CA believed that the host was
 // who you expect to be talking to.
+//
+// By default, both subject alternative names and the subject's common name
+// attribute are checked. The latter has long been deprecated, so callers should
+// call |SSL_set_hostflags| with |X509_CHECK_FLAG_NEVER_CHECK_SUBJECT| to use
+// the standard behavior. https://crbug.com/boringssl/464 tracks fixing the
+// default.
 OPENSSL_EXPORT int SSL_set1_host(SSL *ssl, const char *hostname);
 
+// SSL_set_hostflags calls |X509_VERIFY_PARAM_set_hostflags| on the
+// |X509_VERIFY_PARAM| associated with this |SSL*|. |flags| should be some
+// combination of the |X509_CHECK_*| constants.
+OPENSSL_EXPORT void SSL_set_hostflags(SSL *ssl, unsigned flags);
+
 // SSL_CTX_set_verify_depth sets the maximum depth of a certificate chain
-// accepted in verification. This number does not include the leaf, so a depth
-// of 1 allows the leaf and one CA certificate.
+// accepted in verification. This count excludes both the target certificate and
+// the trust anchor (root certificate).
 OPENSSL_EXPORT void SSL_CTX_set_verify_depth(SSL_CTX *ctx, int depth);
 
 // SSL_set_verify_depth sets the maximum depth of a certificate chain accepted
-// in verification. This number does not include the leaf, so a depth of 1
-// allows the leaf and one CA certificate.
+// in verification. This count excludes both the target certificate and the
+// trust anchor (root certificate).
 OPENSSL_EXPORT void SSL_set_verify_depth(SSL *ssl, int depth);
 
 // SSL_CTX_get_verify_depth returns the maximum depth of a certificate accepted
@@ -2761,11 +2772,6 @@ OPENSSL_EXPORT int SSL_CTX_set_verify_algorithm_prefs(SSL_CTX *ctx,
 OPENSSL_EXPORT int SSL_set_verify_algorithm_prefs(SSL *ssl,
                                                   const uint16_t *prefs,
                                                   size_t num_prefs);
-
-// SSL_set_hostflags calls |X509_VERIFY_PARAM_set_hostflags| on the
-// |X509_VERIFY_PARAM| associated with this |SSL*|. The |flags| argument
-// should be one of the |X509_CHECK_*| constants.
-OPENSSL_EXPORT void SSL_set_hostflags(SSL *ssl, unsigned flags);
 
 
 // Client certificate CA list.
@@ -5313,7 +5319,7 @@ enum ssl_compliance_policy_t BORINGSSL_ENUM_INT {
   // doesn't undo other policies it's an error to try and set it.
   ssl_compliance_policy_none,
 
-  // ssl_policy_fips_202205 configures a TLS connection to use:
+  // ssl_compliance_policy_fips_202205 configures a TLS connection to use:
   //   * TLS 1.2 or 1.3
   //   * For TLS 1.2, only ECDHE_[RSA|ECDSA]_WITH_AES_*_GCM_SHA*.
   //   * For TLS 1.3, only AES-GCM

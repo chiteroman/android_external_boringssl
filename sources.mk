@@ -162,6 +162,13 @@ crypto_sources := \
   src/crypto/rsa_extra/rsa_crypt.c\
   src/crypto/rsa_extra/rsa_print.c\
   src/crypto/siphash/siphash.c\
+  src/crypto/spx/address.c\
+  src/crypto/spx/fors.c\
+  src/crypto/spx/merkle.c\
+  src/crypto/spx/spx.c\
+  src/crypto/spx/spx_util.c\
+  src/crypto/spx/thash.c\
+  src/crypto/spx/wots.c\
   src/crypto/stack/stack.c\
   src/crypto/thread.c\
   src/crypto/thread_none.c\
@@ -185,6 +192,29 @@ crypto_sources := \
   src/crypto/x509/t_req.c\
   src/crypto/x509/t_x509.c\
   src/crypto/x509/t_x509a.c\
+  src/crypto/x509/v3_akey.c\
+  src/crypto/x509/v3_akeya.c\
+  src/crypto/x509/v3_alt.c\
+  src/crypto/x509/v3_bcons.c\
+  src/crypto/x509/v3_bitst.c\
+  src/crypto/x509/v3_conf.c\
+  src/crypto/x509/v3_cpols.c\
+  src/crypto/x509/v3_crld.c\
+  src/crypto/x509/v3_enum.c\
+  src/crypto/x509/v3_extku.c\
+  src/crypto/x509/v3_genn.c\
+  src/crypto/x509/v3_ia5.c\
+  src/crypto/x509/v3_info.c\
+  src/crypto/x509/v3_int.c\
+  src/crypto/x509/v3_lib.c\
+  src/crypto/x509/v3_ncons.c\
+  src/crypto/x509/v3_ocsp.c\
+  src/crypto/x509/v3_pcons.c\
+  src/crypto/x509/v3_pmaps.c\
+  src/crypto/x509/v3_prn.c\
+  src/crypto/x509/v3_purp.c\
+  src/crypto/x509/v3_skey.c\
+  src/crypto/x509/v3_utl.c\
   src/crypto/x509/x509.c\
   src/crypto/x509/x509_att.c\
   src/crypto/x509/x509_cmp.c\
@@ -209,9 +239,7 @@ crypto_sources := \
   src/crypto/x509/x_attrib.c\
   src/crypto/x509/x_crl.c\
   src/crypto/x509/x_exten.c\
-  src/crypto/x509/x_info.c\
   src/crypto/x509/x_name.c\
-  src/crypto/x509/x_pkey.c\
   src/crypto/x509/x_pubkey.c\
   src/crypto/x509/x_req.c\
   src/crypto/x509/x_sig.c\
@@ -219,29 +247,6 @@ crypto_sources := \
   src/crypto/x509/x_val.c\
   src/crypto/x509/x_x509.c\
   src/crypto/x509/x_x509a.c\
-  src/crypto/x509v3/v3_akey.c\
-  src/crypto/x509v3/v3_akeya.c\
-  src/crypto/x509v3/v3_alt.c\
-  src/crypto/x509v3/v3_bcons.c\
-  src/crypto/x509v3/v3_bitst.c\
-  src/crypto/x509v3/v3_conf.c\
-  src/crypto/x509v3/v3_cpols.c\
-  src/crypto/x509v3/v3_crld.c\
-  src/crypto/x509v3/v3_enum.c\
-  src/crypto/x509v3/v3_extku.c\
-  src/crypto/x509v3/v3_genn.c\
-  src/crypto/x509v3/v3_ia5.c\
-  src/crypto/x509v3/v3_info.c\
-  src/crypto/x509v3/v3_int.c\
-  src/crypto/x509v3/v3_lib.c\
-  src/crypto/x509v3/v3_ncons.c\
-  src/crypto/x509v3/v3_ocsp.c\
-  src/crypto/x509v3/v3_pcons.c\
-  src/crypto/x509v3/v3_pmaps.c\
-  src/crypto/x509v3/v3_prn.c\
-  src/crypto/x509v3/v3_purp.c\
-  src/crypto/x509v3/v3_skey.c\
-  src/crypto/x509v3/v3_utl.c\
 
 crypto_sources_asm := \
   apple-aarch64/crypto/chacha/chacha-armv8-apple.S\
