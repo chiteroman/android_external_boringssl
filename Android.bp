@@ -831,9 +831,9 @@ genrule {
 }
 
 rust_defaults {
-    name: "libbssl_ffi_defaults",
+    name: "libbssl_sys_defaults",
     host_supported: true,
-    crate_name: "bssl_ffi",
+    crate_name: "bssl_sys",
     visibility: [
         "//external/rust/crates/openssl",
         "//system/keymint/boringssl",
@@ -849,8 +849,8 @@ rust_defaults {
 }
 
 rust_library {
-    name: "libbssl_ffi",
-    defaults: ["libbssl_ffi_defaults"],
+    name: "libbssl_sys",
+    defaults: ["libbssl_sys_defaults"],
     whole_static_libs: [
         "libbssl_rust_support",
     ],
@@ -861,8 +861,8 @@ rust_library {
 }
 
 rust_library_host_rlib {
-    name: "libbssl_ffi_static",
-    defaults: ["libbssl_ffi_defaults"],
+    name: "libbssl_sys_static",
+    defaults: ["libbssl_sys_defaults"],
     whole_static_libs: [
         "libbssl_rust_support_static",
     ],
@@ -876,8 +876,8 @@ genrule {
 }
 
 rust_library_rlib {
-    name: "libbssl_ffi_nostd",
-    crate_name: "bssl_ffi",
+    name: "libbssl_sys_nostd",
+    crate_name: "bssl_sys",
     visibility: [
         "//packages/modules/Virtualization:__subpackages__",
     ],
