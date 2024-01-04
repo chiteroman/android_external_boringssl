@@ -164,6 +164,13 @@ set(crypto_sources
   ${BORINGSSL_ROOT}src/crypto/rsa_extra/rsa_crypt.c
   ${BORINGSSL_ROOT}src/crypto/rsa_extra/rsa_print.c
   ${BORINGSSL_ROOT}src/crypto/siphash/siphash.c
+  ${BORINGSSL_ROOT}src/crypto/spx/address.c
+  ${BORINGSSL_ROOT}src/crypto/spx/fors.c
+  ${BORINGSSL_ROOT}src/crypto/spx/merkle.c
+  ${BORINGSSL_ROOT}src/crypto/spx/spx.c
+  ${BORINGSSL_ROOT}src/crypto/spx/spx_util.c
+  ${BORINGSSL_ROOT}src/crypto/spx/thash.c
+  ${BORINGSSL_ROOT}src/crypto/spx/wots.c
   ${BORINGSSL_ROOT}src/crypto/stack/stack.c
   ${BORINGSSL_ROOT}src/crypto/thread.c
   ${BORINGSSL_ROOT}src/crypto/thread_none.c
@@ -187,6 +194,29 @@ set(crypto_sources
   ${BORINGSSL_ROOT}src/crypto/x509/t_req.c
   ${BORINGSSL_ROOT}src/crypto/x509/t_x509.c
   ${BORINGSSL_ROOT}src/crypto/x509/t_x509a.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_akey.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_akeya.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_alt.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_bcons.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_bitst.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_conf.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_cpols.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_crld.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_enum.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_extku.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_genn.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_ia5.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_info.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_int.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_lib.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_ncons.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_ocsp.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_pcons.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_pmaps.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_prn.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_purp.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_skey.c
+  ${BORINGSSL_ROOT}src/crypto/x509/v3_utl.c
   ${BORINGSSL_ROOT}src/crypto/x509/x509.c
   ${BORINGSSL_ROOT}src/crypto/x509/x509_att.c
   ${BORINGSSL_ROOT}src/crypto/x509/x509_cmp.c
@@ -211,9 +241,7 @@ set(crypto_sources
   ${BORINGSSL_ROOT}src/crypto/x509/x_attrib.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_crl.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_exten.c
-  ${BORINGSSL_ROOT}src/crypto/x509/x_info.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_name.c
-  ${BORINGSSL_ROOT}src/crypto/x509/x_pkey.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_pubkey.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_req.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_sig.c
@@ -221,29 +249,6 @@ set(crypto_sources
   ${BORINGSSL_ROOT}src/crypto/x509/x_val.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_x509.c
   ${BORINGSSL_ROOT}src/crypto/x509/x_x509a.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_akey.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_akeya.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_alt.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_bcons.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_bitst.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_conf.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_cpols.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_crld.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_enum.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_extku.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_genn.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_ia5.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_info.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_int.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_lib.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_ncons.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_ocsp.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_pcons.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_pmaps.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_prn.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_purp.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_skey.c
-  ${BORINGSSL_ROOT}src/crypto/x509v3/v3_utl.c
 )
 set(crypto_sources_asm
   ${BORINGSSL_ROOT}apple-aarch64/crypto/chacha/chacha-armv8-apple.S
@@ -546,14 +551,15 @@ set(crypto_test_sources
   ${BORINGSSL_ROOT}src/crypto/rsa_extra/rsa_test.cc
   ${BORINGSSL_ROOT}src/crypto/self_test.cc
   ${BORINGSSL_ROOT}src/crypto/siphash/siphash_test.cc
+  ${BORINGSSL_ROOT}src/crypto/spx/spx_test.cc
   ${BORINGSSL_ROOT}src/crypto/stack/stack_test.cc
   ${BORINGSSL_ROOT}src/crypto/test/file_test_gtest.cc
   ${BORINGSSL_ROOT}src/crypto/test/gtest_main.cc
   ${BORINGSSL_ROOT}src/crypto/thread_test.cc
   ${BORINGSSL_ROOT}src/crypto/trust_token/trust_token_test.cc
+  ${BORINGSSL_ROOT}src/crypto/x509/tab_test.cc
   ${BORINGSSL_ROOT}src/crypto/x509/x509_test.cc
   ${BORINGSSL_ROOT}src/crypto/x509/x509_time_test.cc
-  ${BORINGSSL_ROOT}src/crypto/x509v3/tab_test.cc
 )
 set(ssl_test_sources
   ${BORINGSSL_ROOT}src/crypto/test/gtest_main.cc
