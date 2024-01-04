@@ -1,10 +1,14 @@
 # Building BoringSSL
 
+## Checking out BoringSSL
+
+    git clone "https://boringssl.googlesource.com/boringssl"
+
 ## Build Prerequisites
 
 The standalone CMake build is primarily intended for developers. If embedding
 BoringSSL into another project with a pre-existing build system, see
-[INCORPORATING.md](/INCORPORATING.md).
+[INCORPORATING.md](./INCORPORATING.md).
 
 Unless otherwise noted, build tools must at most five years old, matching
 [Abseil guidelines](https://abseil.io/about/compatibility). If in doubt, use the
