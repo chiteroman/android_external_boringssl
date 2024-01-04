@@ -83,7 +83,7 @@ EVP_PKEY *X509_REQ_get_pubkey(X509_REQ *req) {
   return (X509_PUBKEY_get(req->req_info->pubkey));
 }
 
-int X509_REQ_check_private_key(X509_REQ *x, EVP_PKEY *k) {
+int X509_REQ_check_private_key(X509_REQ *x, const EVP_PKEY *k) {
   EVP_PKEY *xk = NULL;
   int ok = 0;
 
@@ -114,7 +114,7 @@ int X509_REQ_extension_nid(int req_nid) {
   return req_nid == NID_ext_req || req_nid == NID_ms_ext_req;
 }
 
-STACK_OF(X509_EXTENSION) *X509_REQ_get_extensions(X509_REQ *req) {
+STACK_OF(X509_EXTENSION) *X509_REQ_get_extensions(const X509_REQ *req) {
   if (req == NULL || req->req_info == NULL) {
     return NULL;
   }
@@ -127,8 +127,10 @@ STACK_OF(X509_EXTENSION) *X509_REQ_get_extensions(X509_REQ *req) {
     return NULL;
   }
 
-  X509_ATTRIBUTE *attr = X509_REQ_get_attr(req, idx);
-  ASN1_TYPE *ext = X509_ATTRIBUTE_get0_type(attr, 0);
+  const X509_ATTRIBUTE *attr = X509_REQ_get_attr(req, idx);
+  // TODO(davidben): |X509_ATTRIBUTE_get0_type| is not const-correct. It should
+  // take and return a const pointer.
+  const ASN1_TYPE *ext = X509_ATTRIBUTE_get0_type((X509_ATTRIBUTE *)attr, 0);
   if (!ext || ext->type != V_ASN1_SEQUENCE) {
     return NULL;
   }

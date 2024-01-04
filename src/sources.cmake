@@ -68,6 +68,7 @@ set(
   crypto/self_test.cc
   crypto/stack/stack_test.cc
   crypto/siphash/siphash_test.cc
+  crypto/spx/spx_test.cc
   crypto/thread_test.cc
   # TODO(crbug.com/boringssl/542): This should be in TEST_SUPPORT_SOURCES, so
   # that all tests can use it. But it depends on GetTestData, which is not
@@ -75,9 +76,9 @@ set(
   crypto/test/file_test_gtest.cc
   crypto/test/gtest_main.cc
   crypto/trust_token/trust_token_test.cc
+  crypto/x509/tab_test.cc
   crypto/x509/x509_test.cc
   crypto/x509/x509_time_test.cc
-  crypto/x509v3/tab_test.cc
 )
 
 set(
@@ -156,6 +157,8 @@ set(
   crypto/pkcs8/test/windows.p12
   crypto/poly1305/poly1305_tests.txt
   crypto/siphash/siphash_tests.txt
+  crypto/spx/spx_tests.txt
+  crypto/spx/spx_tests_deterministic.txt
   crypto/x509/test/basic_constraints_ca.pem
   crypto/x509/test/basic_constraints_ca_pathlen_0.pem
   crypto/x509/test/basic_constraints_ca_pathlen_1.pem
@@ -355,9 +358,6 @@ set(
   pki/crl.cc
   pki/encode_values.cc
   pki/extended_key_usage.cc
-  pki/fillins/fillins_base64.cc
-  pki/fillins/openssl_util.cc
-  pki/fillins/fillins_string_util.cc
   pki/general_names.cc
   pki/input.cc
   pki/ip_util.cc
@@ -393,8 +393,6 @@ set(
   pki/crl_unittest.cc
   pki/encode_values_unittest.cc
   pki/extended_key_usage_unittest.cc
-  pki/fillins/file_util.cc
-  pki/fillins/path_service.cc
   pki/general_names_unittest.cc
   pki/input_unittest.cc
   pki/ip_util_unittest.cc
@@ -416,6 +414,7 @@ set(
   pki/string_util_unittest.cc
   pki/test_helpers.cc
   pki/trust_store_collection_unittest.cc
+  pki/trust_store_in_memory_unittest.cc
   pki/verify_certificate_chain_pkits_unittest.cc
   pki/verify_certificate_chain_unittest.cc
   pki/verify_name_match_unittest.cc
