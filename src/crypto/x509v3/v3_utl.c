@@ -398,8 +398,12 @@ STACK_OF(CONF_VALUE) *X509V3_parse_list(const char *line) {
           state = HDR_NAME;
           *p = 0;
           vtmp = strip_spaces(q);
-#if 0
-                printf("%s\n", ntmp);
+          // Workaround for Clang code coverage profile merging issues (see
+          // b/303264725).
+#if defined(__ANDROID_CLANG_COVERAGE__)
+              for (int i = 0; i < state; i ++)
+                printf("Coverage_test: %s\n",
+                       (ntmp == NULL ? "(NULL)" : ntmp));
 #endif
           if (!vtmp) {
             OPENSSL_PUT_ERROR(X509V3, X509V3_R_INVALID_NULL_VALUE);
