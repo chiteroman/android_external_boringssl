@@ -838,6 +838,7 @@ rust_defaults {
         "//external/rust/crates/openssl",
         "//system/keymint/boringssl",
         "//system/security/prng_seeder",
+        "//system/security/keystore2",
     ],
     // Use the modified source with placeholder replaced.
     srcs: [":libbssl_sys_src"],
